@@ -174,8 +174,11 @@ There is no guarantee that conversion will always work, but at least it's good f
 ### Legacy models
 Since the new interface for composing network is introduced, the old models have inconsistent names for weights.
 You can still load the previous model by rename the symbol to `legacy_xxx.py`
-and call with `python train/demo.py --network legacy_xxx `
-For example:
+and call with:
 ```
-python demo.py --network 'legacy_vgg16_ssd_300.py' --prefix model/ssd_300 --epoch 0
+python demo.py --network=legacy_vgg16_ssd_300 --prefix=model/vgg16_ssd_300_voc0712_trainval/ssd_300 --gpu=0 --data-shape=300
+```
+or
+```
+python demo.py --network=legacy_vgg16_ssd_512 --prefix=model/vgg16_ssd_512_voc0712_trainval/ssd_512 --gpu=0 --data-shape=512
 ```
