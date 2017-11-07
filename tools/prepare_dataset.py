@@ -7,6 +7,7 @@ sys.path.append(os.path.join(curr_path, '..'))
 from dataset.pascal_voc import PascalVoc
 from dataset.mscoco import Coco
 from dataset.concat_db import ConcatDB
+from dataset.wider import Wider
 
 def load_pascal(image_set, year, devkit_path, shuffle=False):
     """
@@ -71,6 +72,21 @@ def load_coco(image_set, dirname, shuffle=False):
     else:
         return imdbs[0]
 
+def load_wider(image_set, dirname, shuffle=False):
+    """
+    wrapper function for loading wider dataset
+
+    Parameters:
+    ----------
+    image_set : str
+        train, val
+    dirname: str
+        root dir for wider
+    shuffle: boolean
+        initial shuffle
+    """
+    return Wider(image_set, dirname, shuffle=shuffle, is_train=True)
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Prepare lists for dataset')
     parser.add_argument('--dataset', dest='dataset', help='dataset to use',
@@ -99,6 +115,9 @@ if __name__ == '__main__':
     elif args.dataset == 'coco':
         db = load_coco(args.set, args.root_path, args.shuffle)
         print("saving list to disk...")
+        db.save_imglist(args.target, root=args.root_path)
+    elif args.dataset == 'wider':
+        db = load_wider(args.set, args.root_path, args.shuffle)
         db.save_imglist(args.target, root=args.root_path)
     else:
         raise NotImplementedError("No implementation for dataset: " + args.dataset)
