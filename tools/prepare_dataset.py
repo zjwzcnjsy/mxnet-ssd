@@ -118,6 +118,7 @@ if __name__ == '__main__':
         db.save_imglist(args.target, root=args.root_path)
     elif args.dataset == 'wider':
         db = load_wider(args.set, args.root_path, args.shuffle)
+        print("saving list to disk...")
         db.save_imglist(args.target, root=args.root_path)
     else:
         raise NotImplementedError("No implementation for dataset: " + args.dataset)
