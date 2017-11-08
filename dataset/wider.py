@@ -2,7 +2,8 @@
 from __future__ import print_function, absolute_import
 import os
 import numpy as np
-from .imdb import Imdb
+from imdb import Imdb
+import cv2
 
 
 class Wider(Imdb):
@@ -114,22 +115,34 @@ class Wider(Imdb):
         temp = []
 
         # load ground-truth from xml annotations
-        for idx in self.image_set_index:
-            label_file = self._label_path_from_index(idx)
+        for index in range(self.num_images):
+            image_file = self.image_path_from_index(index)
+            height, width = self._get_imsize(image_file)
+            label_file = self._label_path_from_index(self.image_set_index[index])
             label = []
-
             with open(label_file) as f:
                 for line in f.readlines():
                     if not line.strip():
                         continue
                     items = [float(x) for x in line.strip().split()]
                     assert len(items) == 4
-                    label.append([0, items[0], items[1], items[0] + items[2],items[1] + items[3]])
+                    x,y,w,h=items
+                    label.append([0, x/width,y/height,(x+w)/width,(y+h)/height])
             temp.append(np.array(label))
         return temp
 
+    def _get_imsize(self, im_name):
+        """
+        get image size info
+        Returns:
+        ----------
+        tuple of (height, width)
+        """
+        img = cv2.imread(im_name)
+        return (img.shape[0], img.shape[1])
+
 if __name__ == '__main__':
-    root_path = r'E:\res\face_detect\images\WIDER'
+    root_path = r'D:\res\face_detect\images\WIDER'
     wider = Wider('val', root_path,True,True)
     print(wider.num_images)
     for idx in range(wider.num_classes):
