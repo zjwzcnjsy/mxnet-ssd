@@ -1,4 +1,5 @@
 from __future__ import print_function
+import os
 import mxnet as mx
 import numpy as np
 from timeit import default_timer as timer
@@ -171,6 +172,9 @@ class Detector(object):
             im_list = [im_list]
         assert len(dets) == len(im_list)
         for k, det in enumerate(dets):
-            img = cv2.imread(im_list[k])
+            filename = im_list[k]
+            if root_dir:
+                filename = os.path.join(root_dir, filename)
+            img = cv2.imread(filename)
             img[:, :, (0, 1, 2)] = img[:, :, (2, 1, 0)]
             self.visualize_detection(img, det, classes, thresh)
