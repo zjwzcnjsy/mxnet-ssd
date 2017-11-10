@@ -16,10 +16,14 @@ python train.py --train-path data/wider-train.rec --val-path data/wider-val.rec 
 ### 测试
 生成检测版本的模型：
 ``` bash
-python deploy.py --network vgg16_reduced --epoch 139 --prefix model/ssd-wider --data-shape 300 --num-class 1
+python deploy.py --network vgg16_reduced --epoch 150 --prefix model/ssd-wider --data-shape 300 --num-class 1
 ```
 
 测试生成的模型：
 ``` bash
-python demo.py --deploy --epoch 139 --prefix model/deploy_ssd-wider --gpu 0 --data-shape 300 --class-names 'face' --images data/demo/000001.jpg
+python demo.py --deploy --epoch 150 --prefix model/deploy_ssd-wider --gpu 0 --data-shape 300 --class-names 'face' --images data/demo/face1.jpg
 ```
+
+测试结果：
+![](result/000001.jpg)
+![](result/face1.jpg)
